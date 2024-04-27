@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express()
+const morgan = require('morgan')
 
 app.use(express.json())
+app.use(morgan('tiny'))
 
 let persons = [
     {
@@ -48,8 +50,7 @@ app.get('/api/persons/:id', (request, response) => {
     if (person) {
         response.json(person)
     } else {
-        response.statusMessage = "Requested person not found"
-        response.status(404).end()
+        response.status(404).send({ error: 'person not found' })
     }
 })
 
@@ -93,11 +94,16 @@ app.post('/api/persons', (request, response) => {
         number: body.number,
         id: generateId()
     }
-    
-    console.log(newPerson)
+
     persons = persons.concat(newPerson)
     response.json(newPerson)
 })
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
 
 const PORT = 3001
 app.listen(PORT, () => {
