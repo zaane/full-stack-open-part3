@@ -28,6 +28,13 @@ app.get('/', (request, response) => {
     response.send('<h1>welcome to da home page</h1>')
 })
 
+app.get('/info', (request, response) => {
+    const date = new Date()
+    response.send(
+        `<p>phonebook has info for ${persons.length} people</p>
+         <p>${date.toString()}</p>`)
+})
+
 app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
