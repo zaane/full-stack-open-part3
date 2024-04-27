@@ -62,20 +62,40 @@ app.delete('/api/persons/:id', (request, response) => {
 
 const generateId = () => {
     const rand = Math.random()
-    const newId = Math.floor(rand*10000)
+    const newId = Math.floor(rand * 10000)
     return newId
 }
 
 app.post('/api/persons', (request, response) => {
-    const newPerson = request.body
-    const newId = generateId()
+    const body = request.body
 
-    newPerson.id = newId
+    if (!body.name) {
+        return response.status(400).json({
+            error: 'name field empty'
+        })
+    }
 
+    if (!body.number) {
+        return response.status(400).json({
+            error: 'number field empty'
+        })
+    }
+
+    if (persons.map(person => person.name).includes(body.name)) {
+        return response.status(400).json({
+            error: 'name already in phonebook'
+        })
+    }
+
+
+    const newPerson = {
+        name: body.name,
+        number: body.number,
+        id: generateId()
+    }
+    
     console.log(newPerson)
-
     persons = persons.concat(newPerson)
-
     response.json(newPerson)
 })
 
