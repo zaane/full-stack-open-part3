@@ -33,9 +33,13 @@ app.get('/', (request, response) => {
 
 app.get('/info', (request, response) => {
     const date = new Date()
-    response.send(
-        `<p>phonebook has info for ${`# OF PEOPLE HERE`} people</p>
-         <p>${date.toString()}</p>`)
+
+    Person.find({})
+        .then(result => {
+            response.send(
+                `<p>phonebook has info for ${result.length} people</p>
+                 <p>${date.toString()}</p>`)
+        })
 })
 
 app.get('/api/persons', (request, response) => {
