@@ -67,10 +67,7 @@ app.get('/info', (request, response) => {
 
 app.get('/api/persons', (request, response) => {
     Person.find({})
-        .then(result =>
-            response.json(result))
-
-    // response.json(persons)
+        .then(result => response.json(result))
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -118,15 +115,16 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
-
-    const newPerson = {
+    const newPerson = new Person({
         name: body.name,
-        number: body.number,
-        id: generateId()
-    }
+        number: body.number
+    })
 
-    persons = persons.concat(newPerson)
-    response.json(newPerson)
+    newPerson.save()
+        .then(result => {
+            console.log(`${result.name} added to phonebook`)
+            response.json(result)
+        })
 })
 
 const unknownEndpoint = (request, response) => {
