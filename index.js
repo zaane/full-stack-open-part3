@@ -46,6 +46,11 @@ let persons = [
         "id": 4,
         "name": "Mary Poppendieck",
         "number": "39-23-6423122"
+    },
+    {
+        "id": 5,
+        "name": "zozo <3",
+        "number": "214 blah blah blah"
     }
 ]
 
@@ -61,7 +66,11 @@ app.get('/info', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-    response.json(persons)
+    Person.find({})
+        .then(result =>
+            response.json(result))
+
+    // response.json(persons)
 })
 
 app.get('/api/persons/:id', (request, response) => {

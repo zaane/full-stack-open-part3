@@ -21,16 +21,19 @@ const personSchema = new mongoose.Schema({
 
 const Person = mongoose.model('Person', personSchema)
 
-
-if (process.argv.length === 3) {
-    // retrieve all persons
+const getPeople = () => {
     Person.find({}).then(result => {
         console.log('phonebook:')
         result.forEach(person => {
-            console.log(`${person.name} ${person.number}`)
+            console.log(person)
         })
         mongoose.connection.close()
     })
+}
+
+
+if (process.argv.length === 3) {
+    getPeople();
 }
 
 if (process.argv.length === 5) {
